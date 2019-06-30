@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
-import Overlay from 'react-bootstrap/Overlay';
-import Popover from 'react-bootstrap/Popover';
+import EntryPopover from './EntryPopover';
+import expandWord from '../util/expandWord';
+import CEDict from '../CEDict';
 
 type Props = React.TextareaHTMLAttributes<HTMLDivElement> & {
   text: string
@@ -9,7 +10,6 @@ type Props = React.TextareaHTMLAttributes<HTMLDivElement> & {
 
 const Text: React.FC<Props> = (props) => {
   const [char, setChar] = useState(undefined as HTMLElement | undefined);
-  const [showTooltip, setShowTooltip] = useState(false);
 
   return <>
     <div {...props}
@@ -18,27 +18,29 @@ const Text: React.FC<Props> = (props) => {
         let target = e.target as HTMLElement;
         if (target.tagName === 'SPAN') {
           setChar(target);
-          setShowTooltip(true);
         }
       }}
-      onMouseOut={() => setShowTooltip(false)}
+      onMouseOut={() => setChar(undefined)}
     >
       {
-        props.text.split('').map(c => {
+        props.text.split('').map((c, i) => {
+          let attr = { 'data-index': i };
           if (c === '\n')
             return <br />
           else
-            return <span>{c}</span>;
+            return <span {...attr}>{c}</span>;
         })
       }
     </div>
-    <Overlay
-      target={char} show={showTooltip}
-      placement="bottom">
-      <Popover id="overlay-example">
-        {char ? char.textContent : ''}
-      </Popover>
-    </Overlay>
+    <CEDict.Context.Consumer>{db =>
+      <EntryPopover
+        target={char}
+        db={db}
+        words={
+          char ?
+            expandWord(props.text, parseInt(char.dataset.index!), 5)
+            : []} />
+    }</CEDict.Context.Consumer>
   </>;
 }
 

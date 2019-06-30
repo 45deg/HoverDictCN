@@ -1,0 +1,9 @@
+#popover {
+  max-width: 100%;
+}
+
+.description {
+  max-width: 300px;
+  white-space: pre-line;
+  word-wrap: break-word;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Dexie from 'dexie';
 
-interface Entry {
+export interface Entry {
   word: string;
   pinyin: string;
   description: string;
