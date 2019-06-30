@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import CEDict, { Entry } from '../CEDict';
 
 import './EntryPopover.css';
+import pinyinify from '../util/pinyinify';
 
 type Props = OverlayProps & {
   words: string[],
@@ -37,7 +38,7 @@ const EntryPopover: React.FC<Props> = ({ words, db, ...props }) => {
           <tr>
             <td>
               <ruby>
-                {e.word}<rt>{e.pinyin}</rt>
+                {e.word}<rt>{pinyinify(e.pinyin)}</rt>
               </ruby>
             </td>
             <td>
