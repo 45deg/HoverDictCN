@@ -4,10 +4,11 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import MainPanel from './components/MainPanel';
 
-import Dexie from 'dexie';
+import CEDict from './CEDict';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import InitDBModal from './components/InitDBModal';
 
 const App: React.FC = () => {
 
@@ -16,7 +17,10 @@ const App: React.FC = () => {
       <Navbar.Brand href="#">HoverDictCN</Navbar.Brand>
     </Navbar>
     <Container>
-      <MainPanel />
+      <CEDict.Context.Provider value={new CEDict()}>
+        <InitDBModal />
+        <MainPanel />
+      </CEDict.Context.Provider>
     </Container>
   </>;
 }
