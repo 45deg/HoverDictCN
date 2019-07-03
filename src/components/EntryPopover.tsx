@@ -6,7 +6,8 @@ import Table from 'react-bootstrap/Table';
 import { Entry } from '../CEDict';
 
 import './EntryPopover.css';
-import pinyinify from '../util/pinyinify';
+import Pinyin from './Pinyin';
+import Description from './Description';
 
 type Props = OverlayProps & {
   entries: Entry[]
@@ -20,14 +21,8 @@ const EntryPopover: React.FC<Props> = ({ entries, ...props }) => {
       <Table bordered size="sm"><tbody>
         {entries.map((e, i) =>
           <tr className={i === 0 ? 'highlight' : ''}>
-            <td>
-              <ruby>
-                {e.word}<rt>{pinyinify(e.pinyin)}</rt>
-              </ruby>
-            </td>
-            <td>
-              <div className="description">{e.description}</div>
-            </td>
+            <td><Pinyin hanzi={e.word} pinyin={e.pinyin} /></td>
+            <td><Description text={e.description} /></td>
           </tr>
         )}
       </tbody></Table>
