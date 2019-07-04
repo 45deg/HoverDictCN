@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Editor from './Editor';
 import Text from './Text';
+import Button from 'react-bootstrap/Button';
 
 const initialText = [
   'Welcome to ヨォドォバァシィカァメェラ。', // debug for non-chinese chars
@@ -22,12 +23,18 @@ const MainPanel: React.FC = () => {
   const [text, setText] = useState(initialText);
 
   if (mode === Mode.Edit) {
-    return <Editor
-      onChange={e => setText(e.target.value)}
-      onBlur={e => { e.preventDefault(); setMode(Mode.Show) }}
-      text={text} />;
+    return <>
+      <Button onClick={() => setMode(Mode.Show)}>Apply</Button>
+      <Editor
+        onChange={e => setText(e.target.value)}
+        onBlur={e => { setMode(Mode.Show) }}
+        text={text} />
+    </>;
   } else {
-    return <Text onClick={e => { e.preventDefault(); setMode(Mode.Edit) }} text={text} />;
+    return <>
+      <Button onClick={() => setMode(Mode.Edit)}>Apply</Button>
+      <Text onClick={e => { setMode(Mode.Edit) }} text={text} />
+    </>;
   }
 }
 

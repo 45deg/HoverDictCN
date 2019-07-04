@@ -16,7 +16,7 @@ const Pinyin: React.FC<Props> = ({ hanzi, pinyin, ...props }) => {
       )}
     </ruby>;
   } else {
-    return <>pinyinify(pinyin)</>;
+    return <>{pinyinify(pinyin)}</>;
   }
 };
 
