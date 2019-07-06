@@ -8,7 +8,9 @@ import CEDict from './CEDict';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import InitDBModal from './components/InitDBModal';
+import TestSample from './TestSample';
 
 const App: React.FC = () => {
 
@@ -17,10 +19,12 @@ const App: React.FC = () => {
       <Navbar.Brand href="#">HoverDictCN</Navbar.Brand>
     </Navbar>
     <Container>
-      <CEDict.Context.Provider value={new CEDict()}>
+      {/*<CEDict.Context.Provider value={new CEDict()}>
         <InitDBModal />
         <MainPanel />
-      </CEDict.Context.Provider>
+      </CEDict.Context.Provider>*/
+      }
+      <TestSample></TestSample>
     </Container>
   </>;
 }

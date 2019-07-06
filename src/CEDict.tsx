@@ -23,7 +23,7 @@ class CEDict extends Dexie {
       let lines = text.split('\n');
       let re = /(.+)\s(.+)\s\[(.+)\]\s\/(.+)\/\s*$/;
       for (let n = 0; n < lines.length; n += 10000) {
-        let buffers = [];
+        let buffers: Entry[] = [];
         let i;
         for (i = 0; i < Math.min(10000, lines.length - n); i++) {
           let line = lines[n + i];

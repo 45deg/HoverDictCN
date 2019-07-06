@@ -5,7 +5,7 @@ export type WordsWithIndex = {
 };
 
 const expandWord = (str: string, index: number, length: number): WordsWithIndex[] => {
-  let expanded = [];
+  let expanded: WordsWithIndex[] = [];
   for (let begin = 0; begin < length; ++begin) {
     if (/^[\s\r\n]*$/.test(str.charAt(index - begin))) {
       break;
