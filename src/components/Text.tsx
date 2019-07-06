@@ -3,23 +3,21 @@ import React, { useState, useEffect } from 'react';
 import EntryPopover from './EntryPopover';
 import expandWord, { WordsWithIndex } from '../util/expandWord';
 import CEDict, { Entry } from '../CEDict';
+import Editor, { OnChangeArgument, CharPosition } from './Editor';
 
-type Props = React.TextareaHTMLAttributes<HTMLDivElement> & {
-  text: string
-};
+type Props = React.TextareaHTMLAttributes<HTMLDivElement>;
 
-const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text }, props) => {
-  const [char, setChar] = useState(undefined as HTMLElement | undefined);
-  const [entries, setEntries] = useState([] as (Entry & WordsWithIndex)[]);
-  const [highlight, setHighlight] = useState(undefined as WordsWithIndex | undefined);
+const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db }, props) => {
+  const [char, setChar] = useState<HTMLElement | undefined>(undefined);
+  const [entries, setEntries] = useState<(Entry & WordsWithIndex)[]>([]);
+  const [highlight, setHighlight] = useState<[CharPosition, CharPosition] | null>(null);
 
-  useEffect(() => {
+  const handleChange = (e: OnChangeArgument) => {
+    if (!e) return;
+    let { text, target, line, column } = e;
     const query = async () => {
       let ents = [] as (Entry & WordsWithIndex)[];
-
-      if (char === undefined || char.dataset.index === undefined) return;
-      let index = parseInt(char.dataset.index);
-      let words = expandWord(text, index, 8);
+      let words = expandWord(text[line].join(''), column, 8);
       for (let w of words) {
         let results =
           await db.entries.where('word').equals(w.word).toArray();
@@ -27,43 +25,23 @@ const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text }, props) 
         ents = [...ents, ...resultsWithIndex];
       }
       ents = ents.sort((a, b) => b.word.length - a.word.length);
-      setHighlight(ents[0]);
+      let first = ents[0];
+      if (first) {
+        setHighlight([{ line, column: first.begin }, { line, column: first.end }]);
+      } else {
+        setHighlight(null);
+      }
       setEntries(ents);
+      setChar(target);
     };
     query();
-  }, [text, char]);
+  };
 
   return <>
-    <div {...props}
-      className="textview border mt-3 p-3"
-      onMouseOver={e => {
-        let target = e.target as HTMLElement;
-        if (target.tagName === 'SPAN') {
-          setChar(target);
-        }
-      }}
-      onMouseOut={() => setChar(undefined)}
-    >
-      {
-        text.split('').map((c, i) => {
-          let attr = { 'data-index': i, className: '' };
-
-          if (highlight && highlight.begin <= i && i <= highlight.end) {
-            attr.className = 'highlight';
-          }
-
-          if (c === '\n')
-            return <br />
-          else
-            return <span {...attr}>{c}</span>;
-        })
-      }
-    </div>
-    <CEDict.Context.Consumer>{db =>
-      <EntryPopover
-        target={char}
-        entries={entries} />
-    }</CEDict.Context.Consumer>
+    <Editor onChange={handleChange} highlight={highlight} />
+    <EntryPopover
+      target={char}
+      entries={entries} />
   </>;
 }
 

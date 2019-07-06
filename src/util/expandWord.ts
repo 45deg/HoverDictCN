@@ -7,11 +7,11 @@ export type WordsWithIndex = {
 const expandWord = (str: string, index: number, length: number): WordsWithIndex[] => {
   let expanded: WordsWithIndex[] = [];
   for (let begin = 0; begin < length; ++begin) {
-    if (/^[\s\r\n]*$/.test(str.charAt(index - begin))) {
+    if (index - begin < 0) {
       break;
     }
     for (let end = 0; end < length; ++end) {
-      if (/^[\s\r\n]*$/.test(str.charAt(index + end))) {
+      if (index + end >= str.length) {
         break;
       }
       expanded.push({

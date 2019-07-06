@@ -3,8 +3,6 @@ import assert from 'assert';
 import expandWord from '../../util/expandWord';
 
 const TEXT = '道，可道也，非恆道也。名，可名也，非恆名也。';
-const TEXT2 = '道可道也非恆道也\n名可名也非恆名也';
-
 const parameters: [string, number, string, string[]][] = [
   ['expand correctly', 8, TEXT, ['道', '道也', '道也。',
     '恆道', '恆道也', '恆道也。',
@@ -12,7 +10,6 @@ const parameters: [string, number, string, string[]][] = [
   ]],
   ['expand on beginning', 0, TEXT, ['道', '道，', '道，可']],
   ['expand on end', 21, TEXT, ['。', '也。', '名也。']],
-  ['expand with LF', 7, TEXT2, ['也', '道也', '恆道也']],
 ];
 
 describe('expandWord test', () => {
