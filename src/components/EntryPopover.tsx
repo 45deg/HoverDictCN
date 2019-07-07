@@ -16,6 +16,7 @@ type Props = OverlayProps & {
 const EntryPopover: React.FC<Props> = ({ entries, ...props }) => {
   return <Overlay {...props}
     show={entries.length > 0}
+    transition={false}
     placement="bottom">
     <Popover id="popover">
       <Table bordered size="sm"><tbody>

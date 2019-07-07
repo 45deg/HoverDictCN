@@ -17,7 +17,7 @@ const App: React.FC = () => {
     <Navbar bg="dark" variant="dark">
       <Navbar.Brand href="#">HoverDictCN</Navbar.Brand>
     </Navbar>
-    <Container>
+    <Container className="p-0">
       <CEDict.Context.Provider value={new CEDict()}>
         <InitDBModal />
         <MainPanel />

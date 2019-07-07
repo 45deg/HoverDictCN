@@ -35,10 +35,10 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
 
   useEffect(() => {
     if (onChange) {
-      if (!char) {
+      if (!char || !char.dataset.pos) {
         onChange(null);
       } else {
-        let m = char.dataset.pos!.match(/(\d+):(\d+)/)!;
+        let m = char.dataset.pos.match(/(\d+):(\d+)/)!;
         let line = parseInt(m[1]);
         let column = parseInt(m[2]);
         onChange({ text: text, target: char, line, column });
@@ -47,7 +47,20 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
   }, [text, char]);
 
   useEffect(() => {
-    // todo
+    if (!highlight) return;
+    const { document } = value;
+    const [begin, end] = highlight;
+    const [node, path] = [...document.texts()][begin.line];
+
+    let annotation = Annotation.create({
+      key: HIGHLIGHT_TYPE,
+      type: HIGHLIGHT_TYPE,
+      anchor: { path, key: node.key, offset: begin.column },
+      focus: { path, key: node.key, offset: end.column + 1 },
+    });
+
+    let annotations = value.get('annotations').set(HIGHLIGHT_TYPE, annotation);
+    setValue(value.set('annotations', annotations));
   }, [highlight]);
 
   const handleChange = ({ value }) => {
@@ -95,7 +108,12 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
           className="char" data-pos={`${data.get('line')}:${data.get('col')}`}>
           {children}
         </span>
-      )
+      );
+    } else if (type === HIGHLIGHT_TYPE) {
+      return <span {...attributes}
+        className="highlight">
+        {children}
+      </span>;
     } else {
       return next()
     }
@@ -108,7 +126,7 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
     }
   }, 100);
 
-  return <div {...props}
+  return <div className="editor p-3" {...props}
     onMouseOver={useCallback(e => handleMouseOver(e.target), [])}
     onMouseOut={() => setChar(undefined)}>
     <Slate ref={editorRef} value={value}
