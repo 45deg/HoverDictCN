@@ -17,8 +17,9 @@ const EntryPopover: React.FC<Props> = ({ entries, ...props }) => {
   return <Overlay {...props}
     show={entries.length > 0}
     transition={false}
-    placement="bottom">
-    <Popover id="popover">
+    placement="bottom"
+    popperConfig={{ modifiers: { preventOverflow: { enabled: false } } }}>
+    <Popover id="popover" style={{ 'position': 'absolute' }}>
       <Table bordered size="sm"><tbody>
         {entries.map((e, i) =>
           <tr className={i === 0 ? 'highlight' : ''}>

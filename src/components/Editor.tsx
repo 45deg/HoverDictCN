@@ -126,7 +126,7 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
     }
   }, 100);
 
-  return <div className="editor p-3" {...props}
+  return <div lang="zh-CN" className="editor p-3" {...props}
     onMouseOver={useCallback(e => handleMouseOver(e.target), [])}
     onMouseOut={() => setChar(undefined)}>
     <Slate ref={editorRef} value={value}
