@@ -18,11 +18,11 @@ const EntryPopover: React.FC<Props> = ({ entries, ...props }) => {
     show={entries.length > 0}
     transition={false}
     placement="bottom"
-    popperConfig={{ modifiers: { preventOverflow: { enabled: false } } }}>
-    <Popover id="popover" style={{ 'position': 'absolute' }}>
+    popperConfig={{ modifiers: { preventOverflow: { enabled: false }, hide: { enabled: false } } }}>
+    <Popover id="popover">
       <Table bordered size="sm"><tbody>
         {entries.map((e, i) =>
-          <tr className={i === 0 ? 'highlight' : ''}>
+          <tr className={i === 0 ? 'highlight' : ''} key={`${i}:${e}`}>
             <td><Pinyin hanzi={e.word} pinyin={e.pinyin} /></td>
             <td><Description text={e.description} /></td>
           </tr>

@@ -33,6 +33,7 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
   const [text, setText] = useState<JaggedText>([]);
   const [char, setChar] = useState<HTMLElement | undefined>();
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (onChange) {
       if (!char || !char.dataset.pos) {
@@ -62,6 +63,7 @@ const Editor: React.FC<Props> = ({ onChange, highlight, ...props }) => {
     let annotations = value.get('annotations').set(HIGHLIGHT_TYPE, annotation);
     setValue(value.set('annotations', annotations));
   }, [highlight]);
+  /* eslint-disable react-hooks/exhaustive-deps */
 
   const handleChange = ({ value }) => {
     const { document } = value;

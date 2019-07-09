@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import EntryPopover from './EntryPopover';
 import expandWord, { WordsWithIndex } from '../util/expandWord';
 import CEDict, { Entry } from '../CEDict';

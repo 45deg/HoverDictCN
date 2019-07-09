@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import pinyinify from '../util/pinyinify';
 
 type Props = React.HTMLAttributes<HTMLElement> & {
@@ -12,7 +12,7 @@ const Pinyin: React.FC<Props> = ({ hanzi, pinyin, ...props }) => {
     let ps = pinyin.split(' ');
     return <ruby {...props}>
       {hs.map((h, i) =>
-        <>{h}<rt key={h + ps[i]}>{pinyinify(ps[i])}</rt></>
+        <Fragment key={`${i}:${h}`}>{h}<rt>{pinyinify(ps[i])}</rt></Fragment>
       )}
     </ruby>;
   } else {

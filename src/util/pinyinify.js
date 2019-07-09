@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * @file Converts pinyin tone numbers to tone marks.
  * @author Kevin K. Yang <yangkevi@usc.edu>

@@ -4,7 +4,7 @@ type GroupType =
 type ResultType =
   (string | GroupType)[];
 
-const REF_REGEXP = /([^\s!-\/:-@\[-`{-~]+)?(?:\|([^\s!-\/:-@\[-`{-~]+))?\[([\w\s]+)\]/;
+const REF_REGEXP = /([^\s!-/:-@[-`{-~]+)?(?:\|([^\s!-/:-@[-`{-~]+))?\[([\w\s]+)\]/;
 
 function devideRefWord(string: string): ResultType {
   let list: ResultType = [];

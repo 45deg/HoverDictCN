@@ -25,7 +25,7 @@ const InitDBModalWithContext: React.FC<Context> = ({ db }) => {
       setStatus(count === 0 ? LoadingStatus.NotInitialized : LoadingStatus.Loaded);
     }
     getCount();
-  }, []);
+  }, [db]);
 
   // Load Dictionary
   useEffect(() => {
@@ -52,7 +52,7 @@ const InitDBModalWithContext: React.FC<Context> = ({ db }) => {
     return () => {
       cancel.cancel();
     }
-  }, [isLoading]);
+  }, [db, isLoading]);
 
   // Import Dictionary
 
