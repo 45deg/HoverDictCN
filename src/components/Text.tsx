@@ -4,11 +4,11 @@ import EntryPopover from './EntryPopover';
 import expandWord, { WordsWithIndex } from '../util/expandWord';
 import CEDict, { Entry } from '../CEDict';
 
-type Props = React.TextareaHTMLAttributes<HTMLDivElement> & {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   text: string
 };
 
-const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text }, props) => {
+const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text, ...props }) => {
   const [char, setChar] = useState(undefined as HTMLElement | undefined);
   const [entries, setEntries] = useState([] as (Entry & WordsWithIndex)[]);
   const [highlight, setHighlight] = useState(undefined as WordsWithIndex | undefined);
@@ -35,7 +35,7 @@ const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text }, props) 
 
   return <>
     <div {...props}
-      className="textview border mt-3 p-3"
+      className="textview"
       onMouseOver={e => {
         let target = e.target as HTMLElement;
         if (target.tagName === 'SPAN') {

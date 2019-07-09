@@ -1,5 +1,23 @@
+.textview, .texteditor {
+    height: 100%;
+    font-family: serif;
+    font-size: 20px;
+    white-space: pre-wrap;
+    padding: 0.5em;
+}
+
 .textview {
     cursor: pointer;
+}
+
+.texteditor {
+    width: 100%;
+    border: none;
+    background-color:#efefef;
+}
+
+.container {
+    padding: 0 !important;
 }
 
 body {
@@ -27,9 +45,4 @@ body {
 .editor,
 .editor > div {
     height: 100%;
-}
-
-.editor {
-    font-family: serif;
-    font-size: 20px;
 }
