@@ -5,13 +5,15 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import LoadingProgress from './LoadingProgress';
 import LoadingStatus from '../model/LoadingStatus';
+import Navbar from 'react-bootstrap/Navbar';
 
 type Context = {
   db: CEDict
 };
 
-const InitDBModalWithContext: React.FC<Context> = ({ db }) => {
+const DBStatusWithContext: React.FC<Context> = ({ db, ...props }) => {
   let [status, setStatus] = useState(LoadingStatus.None);
+  let [count, setCount] = useState(0);
   let [progress, setProgress] = useState(0);
 
   let isLoading =
@@ -21,11 +23,12 @@ const InitDBModalWithContext: React.FC<Context> = ({ db }) => {
   // Get Count
   useEffect(() => {
     let getCount = async () => {
-      let count = await db.entries.count();
-      setStatus(count === 0 ? LoadingStatus.NotInitialized : LoadingStatus.Loaded);
+      let result = await db.entries.count();
+      setStatus(result === 0 ? LoadingStatus.NotInitialized : LoadingStatus.Loaded);
+      setCount(result);
     }
     getCount();
-  }, []);
+  }, [db]);
 
   // Load Dictionary
   useEffect(() => {
@@ -38,6 +41,7 @@ const InitDBModalWithContext: React.FC<Context> = ({ db }) => {
           cancelToken: cancel.token,
           onDownloadProgress: (e: ProgressEvent) => {
             setProgress(100 * e.loaded / e.total);
+            setCount(e.loaded);
           }
         });
         setStatus(LoadingStatus.ImportingIntoDB);
@@ -54,39 +58,44 @@ const InitDBModalWithContext: React.FC<Context> = ({ db }) => {
     }
   }, [isLoading]);
 
-  // Import Dictionary
-
-  return <Modal
-    onHide={() => { }}
-    show={status !== LoadingStatus.Loaded && status !== LoadingStatus.None}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
-  >
-    <Modal.Header>
-      <Modal.Title id="contained-modal-title-vcenter">
-        Import
+  return <>
+    {
+      status === LoadingStatus.NotInitialized ?
+        <Button>Load Dictionary</Button> :
+        <Navbar.Text>{` ${count} entries`}</Navbar.Text>
+    }
+    <Modal
+      onHide={() => { }}
+      show={status !== LoadingStatus.Loaded && status !== LoadingStatus.None}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Import
       </Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      {status === LoadingStatus.NotInitialized && <p>
-        Imports Chinese-English Dictionary DataBase at first. (<i>It may takes a long time.</i>)
+      </Modal.Header>
+      <Modal.Body>
+        {status === LoadingStatus.NotInitialized && <p>
+          Imports Chinese-English Dictionary DataBase at first. (<i>It may takes a long time.</i>)
       </p>}
-      {isLoading &&
-        <LoadingProgress progress={progress} status={status} />}
-    </Modal.Body>
-    <Modal.Footer>
-      <Button
-        disabled={isLoading}
-        onClick={() => setStatus(LoadingStatus.LoadingDict)}>Continue</Button>
-    </Modal.Footer>
-  </Modal>
+        {isLoading &&
+          <LoadingProgress progress={progress} status={status} />}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          disabled={isLoading}
+          onClick={() => setStatus(LoadingStatus.LoadingDict)}>Continue</Button>
+      </Modal.Footer>
+    </Modal>
+  </>;
 }
 
-const InitDBModal: React.FC = () => {
+const DBStatus: React.FC = (props) => {
   return <CEDict.Context.Consumer>{db =>
-    <InitDBModalWithContext db={db} />
+    <DBStatusWithContext db={db} {...props} />
   }</CEDict.Context.Consumer>;
 }
 
-export default InitDBModal;
+export default DBStatus;

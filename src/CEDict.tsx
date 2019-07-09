@@ -18,6 +18,10 @@ class CEDict extends Dexie {
     this.entries = this.table('entries');
   }
 
+  public clearDictionary() {
+    return this.entries.clear();
+  }
+
   public async importDictionary(text: string, onProgress?: (progress: number) => void) {
     await this.transaction('rw', this.entries, async () => {
       let lines = text.split('\n');
@@ -43,9 +47,7 @@ class CEDict extends Dexie {
             });
           }
         }
-        console.log('aaa')
         await this.entries.bulkAdd(buffers);
-        console.log('aaa')
         if (onProgress) {
           onProgress(100 * (n + i) / lines.length);
         }
