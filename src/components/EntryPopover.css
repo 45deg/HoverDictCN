@@ -1,6 +1,8 @@
 #popover {
   max-width: 100%;
+  pointer-events: none;
 }
+
 
 .description {
   max-width: 300px;
@@ -10,4 +12,12 @@
 
 .highlight {
   background-color: #FFC !important;
+}
+
+.popover-body {
+    padding: 0 !important;
+}
+
+.popover-body > table {
+  border-top: none;
 }
