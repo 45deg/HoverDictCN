@@ -5,20 +5,22 @@ import expandWord, { WordsWithIndex } from '../util/expandWord';
 import CEDict, { Entry } from '../CEDict';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
-  text: string
+  text: string,
+  onCharFocus?: (index: number | undefined) => any
 };
 
-const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text, ...props }) => {
+const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text, onCharFocus, ...props }) => {
   const [char, setChar] = useState(undefined as HTMLElement | undefined);
   const [entries, setEntries] = useState([] as (Entry & WordsWithIndex)[]);
   const [highlight, setHighlight] = useState(undefined as WordsWithIndex | undefined);
+
+  const index = (char && char.dataset.index !== undefined) ? parseInt(char.dataset.index) : undefined;
 
   useEffect(() => {
     const query = async () => {
       let ents = [] as (Entry & WordsWithIndex)[];
 
-      if (char === undefined || char.dataset.index === undefined) return;
-      let index = parseInt(char.dataset.index);
+      if (typeof index !== 'number') return;
       let words = expandWord(text, index, 8);
       for (let w of words) {
         let results =
@@ -43,6 +45,10 @@ const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text, ...props 
         }
       }}
       onMouseOut={() => setChar(undefined)}
+      onClick={e => {
+        onCharFocus && onCharFocus(index);
+        props.onClick && props.onClick(e);
+      }}
     >
       {
         text.split('').map((c, i) => {

@@ -18,19 +18,21 @@ enum Mode {
 const MainPanel: React.FC = () => {
 
   const [mode, setMode] = useState(Mode.Show);
-
   const [text, setText] = useState(initialText);
+  const [index, setIndex] = useState<number | undefined>(undefined);
 
   if (mode === Mode.Edit) {
     return <>
-      <Editor
+      <Editor lang="zh"
         onChange={e => setText(e.target.value)}
         onBlur={e => { setMode(Mode.Show) }}
-        text={text} />
+        text={text}
+        focus={index} />
     </>;
   } else {
     return <>
-      <Text onClick={e => { setMode(Mode.Edit) }} text={text} />
+      <Text lang="zh" onClick={e => { setMode(Mode.Edit) }} text={text}
+        onCharFocus={i => setIndex(i)} />
     </>;
   }
 }
