@@ -33,7 +33,7 @@ class CEDict extends Dexie {
           let line = lines[n + i];
           if (line[0] === '#') continue; // comment
           let m = line.match(re);
-          if (m === null) throw 'Invalid line ' + line;
+          if (m === null) throw new Error('Invalid line ' + line);
           let entry = {
             word: m[1],
             pinyin: m[3],

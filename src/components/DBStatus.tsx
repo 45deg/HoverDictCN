@@ -56,7 +56,7 @@ const DBStatusWithContext: React.FC<Context> = ({ db, ...props }) => {
     return () => {
       cancel.cancel();
     }
-  }, [isLoading]);
+  }, [db, isLoading]);
 
   return <>
     {

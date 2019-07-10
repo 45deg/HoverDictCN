@@ -12,7 +12,7 @@ const Pinyin: React.FC<Props> = ({ hanzi, pinyin, ...props }) => {
     let ps = pinyin.split(' ');
     return <ruby {...props} lang="zh">
       {hs.map((h, i) =>
-        <>{h}<rt>{pinyinify(ps[i])}</rt></>
+        <Fragment key={i + h}>{h}<rt>{pinyinify(ps[i])}</rt></Fragment>
       )}
     </ruby>;
   } else {

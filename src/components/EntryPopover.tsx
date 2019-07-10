@@ -16,7 +16,8 @@ type Props = OverlayProps & {
 const EntryPopover: React.FC<Props> = ({ entries, ...props }) => {
   return <Overlay {...props}
     show={entries.length > 0}
-    placement="bottom">
+    placement="bottom"
+    popperConfig={{ modifiers: { preventOverflow: { enabled: false }, hide: { enabled: false } } }}>
     <Popover id="popover">
       <Table size="sm" className="m-0"><tbody>
         {entries.map((e, i) =>

@@ -8,12 +8,12 @@ type Props = React.HTMLAttributes<HTMLElement> & {
 
 const Description: React.FC<Props> = ({ text, ...props }) => {
   return <div className="description" {...props}>{
-    devideRefWord(text).map(s => {
+    devideRefWord(text).map((s, i) => {
       if (typeof s === 'string') {
         return s;
       } else {
-        let [hz1, hz2, py] = s;
-        return <Pinyin hanzi={hz1} pinyin={py} />;
+        let [hz1, , py] = s;
+        return <Pinyin key={i} hanzi={hz1} pinyin={py} />;
       }
     })
   }</div>

@@ -33,7 +33,8 @@ const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text, onCharFoc
       setEntries(ents);
     };
     query();
-  }, [text, char]);
+    return () => { };
+  }, [db, text, char, index]);
 
   return <>
     <div {...props}
@@ -59,17 +60,15 @@ const TextWithContext: React.FC<Props & { db: CEDict }> = ({ db, text, onCharFoc
           }
 
           if (c === '\n')
-            return <br />
+            return <br key={c + i} />;
           else
-            return <span {...attr}>{c}</span>;
+            return <span {...attr} key={c + i}>{c}</span>;
         })
       }
     </div>
-    <CEDict.Context.Consumer>{db =>
-      <EntryPopover
-        target={char}
-        entries={entries} />
-    }</CEDict.Context.Consumer>
+    <EntryPopover
+      target={char}
+      entries={entries} />
   </>;
 }
 
