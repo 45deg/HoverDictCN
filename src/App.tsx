@@ -11,6 +11,8 @@ import DBStatus from './components/DBStatus';
 import Text from './components/Text';
 import Editor from './components/Editor';
 
+import isTouchDevice from 'is-touch-device';
+
 const initialText = [
   '输入中文', '',
   '知天之所为,知人之所为者,至矣。',
@@ -56,10 +58,10 @@ const App: React.FC = () => {
       <CEDict.Context.Provider value={new CEDict()}>
         {(mode === Mode.Edit) ? <Editor lang="zh"
           onChange={e => setText(e.target.value)}
-          onBlur={e => { setMode(Mode.Show); }}
+          onBlur={e => !isTouchDevice() && setMode(Mode.Show)}
           text={text}
           focus={index} />
-          : <Text lang="zh" onClick={e => { setMode(Mode.Edit) }} text={text}
+          : <Text lang="zh" onClick={e => !isTouchDevice() && setMode(Mode.Edit)} text={text}
             onCharFocus={i => setIndex(i)} />}
       </CEDict.Context.Provider>
     </Container>

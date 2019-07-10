@@ -3,7 +3,6 @@
   pointer-events: none;
 }
 
-
 .description {
   max-width: 300px;
   white-space: pre-line;
@@ -20,4 +19,14 @@
 
 .popover-body > table {
   border-top: none;
+}
+
+.fixed-popover {
+  position: fixed;
+  background-color: #FFF;
+  overflow-y: scroll;
+  max-height: 50%;
+  left:0;
+  right:0;
+  bottom:0;
 }

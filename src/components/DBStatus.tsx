@@ -41,13 +41,13 @@ const DBStatusWithContext: React.FC<Context> = ({ db, ...props }) => {
           cancelToken: cancel.token,
           onDownloadProgress: (e: ProgressEvent) => {
             setProgress(100 * e.loaded / e.total);
-            setCount(e.loaded);
           }
         });
         setStatus(LoadingStatus.ImportingIntoDB);
         setProgress(0);
         await db.importDictionary(res.data, setProgress);
         setStatus(LoadingStatus.Loaded);
+        setCount(await db.entries.count());
       };
 
       setStatus(LoadingStatus.LoadingDict);
